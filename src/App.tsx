@@ -1,13 +1,12 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { ArrowUp, Award, Code2 } from "lucide-react";
+import { ArrowUp, Award, Code2, Github, Instagram, Linkedin } from "lucide-react";
 import About from "./components/About";
 import Blogs from "./components/Blogs";
 import Contact from "./components/Contact";
 import Education from "./components/Education";
 import Navbar from "./components/Navbar";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
+import Projects, { PROJECT_RETURN_SCROLL_KEY } from "./components/Projects";
 import { resumeData } from "./data";
 
 type SectionPage = "about" | "edu-skill" | "project" | "blogs-extra" | "contact";
@@ -53,65 +52,68 @@ const getSectionPageFromHash = (): SectionPage => {
   return "about";
 };
 
-function LandingPage({ onEnter }: { onEnter: () => void }) {
+function LandingPage() {
   return (
-    <button
-      type="button"
-      className="landing-screen"
-      onClick={onEnter}
-      aria-label="Enter Raunak Pandey's portfolio"
-    >
-      <picture className="landing-art">
-        <source
-          media="(max-width: 640px)"
-          srcSet="/landing-mobile-ver.jpeg"
-        />
+    <section id="landing" className="landing-hero" aria-label="Landing page">
+      <section className="landing-intro" aria-labelledby="landing-name">
+        <p className="landing-eyebrow">Cloud · DevOps · Platform Engineering</p>
+        <h1 id="landing-name">Raunak<br />Pandey</h1>
+        <span className="landing-rule" aria-hidden="true" />
+        <nav className="landing-socials" aria-label="Social profiles">
+          <a href={resumeData.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
+            <Instagram aria-hidden="true" />
+          </a>
+          <a href={resumeData.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+            <Github aria-hidden="true" />
+          </a>
+          <a href={resumeData.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <Linkedin aria-hidden="true" />
+          </a>
+        </nav>
+      </section>
+
+      <div className="landing-portrait-wrap">
         <img
-          className="landing-art-image"
-          src="/landing-neon.jpeg"
-          alt="Illustration of Raunak Pandey surrounded by DevOps and cloud gaming artwork"
+          className="landing-portrait"
+          src="/raunak-cutout.png"
+          alt="Portrait of Raunak Pandey"
         />
-      </picture>
-      <img
-        className="landing-signature"
-        src="/signature.webp"
-        alt="Raunak Pandey's signature"
-      />
-    </button>
+      </div>
+
+      <section className="landing-copy" aria-labelledby="landing-role">
+        <p className="landing-eyebrow">Introducing</p>
+        <h2 id="landing-role">DevOps &amp; Cloud Infrastructure Engineer.</h2>
+        <p>
+          I build and automate cloud infrastructure, engineering reliable,
+          scalable systems that simplify software deployment and operations.
+        </p>
+        <p>
+          My mission is to make infrastructure smarter, resilient, and built for
+          continuous innovation.
+        </p>
+        <a className="landing-story-link" href="#about">
+          My Story <span aria-hidden="true">→</span>
+        </a>
+      </section>
+    </section>
   );
 }
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--border-soft)] bg-[var(--ink-black)]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <img
-            src="/R.png"
-            alt=""
-            className="h-8 w-8 shrink-0 rounded-md bg-white object-contain p-0.5"
-          />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-[var(--cloud-white)]">
-              {resumeData.name}
-            </p>
-            <p className="text-xs text-[var(--grey-blue)]">
-              © {new Date().getFullYear()}
-            </p>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() =>
-            document
-              .getElementById("app-content")
-              ?.scrollTo({ top: 0, behavior: "smooth" })
-          }
-          className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--border-soft)] px-3 py-2 text-sm font-medium text-[var(--cloud-white)] transition-colors hover:border-[var(--dusty-teal)] hover:text-[var(--dusty-teal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--dusty-teal)]"
-        >
-          Back to top
+    <footer className="site-footer">
+      <div className="site-footer-inner">
+        <a className="site-footer-brand" href="#landing" aria-label="Raunak Pandey landing page">
+          <span className="site-footer-logo" aria-hidden="true">R</span>
+          <span>
+            <strong>{resumeData.name}</strong>
+            <small>© {new Date().getFullYear()}</small>
+          </span>
+        </a>
+        <a href="#landing" className="site-footer-top">
+          Move to Top
           <ArrowUp aria-hidden="true" className="h-4 w-4" />
-        </button>
+        </a>
       </div>
     </footer>
   );
@@ -122,7 +124,7 @@ function BlogsPage() {
     <>
       <Blogs />
 
-      <section className="portfolio-art portfolio-art-blogs border-b border-[var(--border-soft)] py-16 sm:py-20">
+      <section className="portfolio-art border-b border-[var(--border-soft)] py-16 sm:py-20">
         <div className="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <section className="border border-[var(--border-soft)] p-4 sm:p-6">
             <div className="mb-4 flex items-center gap-2.5 border-b border-[var(--border-soft)] pb-3">
@@ -177,32 +179,41 @@ export default function App() {
   }, []);
 
   useLayoutEffect(() => {
-    if (page === "portfolio") {
-      const hash = window.location.hash.replace(/^#\/?/, "");
+    if (page !== "portfolio") return;
+    const hash = window.location.hash.replace(/^#\/?/, "");
+    const returnScroll = sessionStorage.getItem(PROJECT_RETURN_SCROLL_KEY);
+    if (
+      (hash === "project" || hash === "projects") &&
+      returnScroll !== null
+    ) {
+      document
+        .getElementById("app-content")
+        ?.scrollTo(0, Number(returnScroll));
+      sessionStorage.removeItem(PROJECT_RETURN_SCROLL_KEY);
+      return;
+    }
+
+    if (window.location.hash.startsWith("#/")) {
       const targetId =
         hash === "education" || hash === "skills" || hash === "edu-skill"
           ? "education"
-          : hash === "projects" || hash === "project"
+          : hash === "project" || hash === "projects"
             ? "projects"
             : hash === "blogs" || hash === "blogs-extra"
               ? "blogs"
               : hash === "contact"
                 ? "contact"
-                : "about";
-      document.getElementById(targetId)?.scrollIntoView();
-    } else {
-      document.getElementById("app-content")?.scrollTo(0, 0);
+                : hash === "about"
+                  ? "about"
+                  : null;
+      if (targetId) {
+        document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }, [page]);
 
-  const enterPortfolio = () => {
-    window.location.hash = "#about";
-    setPage("portfolio");
-    setActiveSection("about");
-  };
-
   useEffect(() => {
-    if (page !== "portfolio") return;
+    if (page.startsWith("project/")) return;
 
     const sections = [
       { id: "about", page: "about" },
@@ -236,10 +247,6 @@ export default function App() {
     return () => observer.disconnect();
   }, [page]);
 
-  if (page === "home") {
-    return <LandingPage onEnter={enterPortfolio} />;
-  }
-
   if (page.startsWith("project/")) {
     return (
       <div className="ink-indigo min-h-screen bg-[var(--ink-black)] text-[var(--cloud-white)]">
@@ -257,9 +264,9 @@ export default function App() {
     <div className="ink-indigo min-h-screen bg-[var(--ink-black)] text-[var(--cloud-white)] selection:bg-[var(--midnight-indigo)] selection:text-[var(--cloud-white)]">
       <Navbar activePage={activeSection} />
       <main id="app-content" className="app-content">
+        <LandingPage />
         <About />
         <Education />
-        <Skills />
         <Projects />
         <BlogsPage />
         <Contact />

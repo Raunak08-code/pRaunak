@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { ArrowUp, Github, Instagram, Linkedin } from "lucide-react";
+import { ArrowLeft, ArrowUp, Download, Github, Instagram, Linkedin } from "lucide-react";
 import About from "./components/About";
 import Blogs from "./components/Blogs";
 import Contact from "./components/Contact";
@@ -10,7 +10,9 @@ import Projects, { PROJECT_RETURN_SCROLL_KEY } from "./components/Projects";
 import { resumeData } from "./data";
 
 type SectionPage = "about" | "edu-skill" | "project" | "blogs-extra" | "contact";
-type Page = "home" | "portfolio" | `project/${string}`;
+type Page = "home" | "portfolio" | "resume" | `project/${string}`;
+
+const resumePdfPath = "/docs/RAUNAK_PANDEY-DEVOPS_ENGINEER.pdf";
 
 const getPageFromHash = (): Page => {
   const hash = window.location.hash;
@@ -22,6 +24,8 @@ const getPageFromHash = (): Page => {
     }
     return "portfolio";
   }
+
+  if (page === "resume") return "resume";
 
   return [
     "",
@@ -71,7 +75,7 @@ function LandingPage() {
         <p className="landing-eyebrow">Cloud · DevOps · Platform Engineering</p>
         <h1 id="landing-name">RAUNAK<br />PANDEY</h1>
         <span className="landing-rule" aria-hidden="true" />
-        <nav className="landing-socials" aria-label="Social profiles">
+        <nav className="landing-socials" aria-label="Social profiles and résumé">
           <a href={resumeData.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
             <Instagram aria-hidden="true" />
           </a>
@@ -81,6 +85,7 @@ function LandingPage() {
           <a href={resumeData.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <Linkedin aria-hidden="true" />
           </a>
+          <a className="landing-resume-link" href="#resume">Resume</a>
         </nav>
       </section>
 
@@ -107,6 +112,32 @@ function LandingPage() {
           My Story <span aria-hidden="true">→</span>
         </a>
       </section>
+    </section>
+  );
+}
+
+function ResumePage() {
+  return (
+    <section className="resume-page" aria-label="Raunak Pandey resume">
+      <div className="resume-toolbar">
+        <a className="resume-toolbar-button resume-back-button" href="#landing">
+          <ArrowLeft aria-hidden="true" />
+          <span>Back</span>
+        </a>
+        <a
+          className="resume-toolbar-button resume-download-button"
+          href={resumePdfPath}
+          download="Raunak-Pandey-Resume.pdf"
+        >
+          <span>Download</span>
+          <Download aria-hidden="true" />
+        </a>
+      </div>
+      <iframe
+        className="resume-document"
+        src={`${resumePdfPath}#view=FitH`}
+        title="Raunak Pandey resume PDF"
+      />
     </section>
   );
 }
@@ -216,6 +247,18 @@ export default function App() {
         <Navbar activePage="project" />
         <main id="app-content" className="app-content">
           <Projects projectId={page.slice("project/".length)} />
+        </main>
+        <Analytics />
+      </div>
+    );
+  }
+
+  if (page === "resume") {
+    return (
+      <div className="ink-indigo min-h-screen bg-[var(--ink-black)] text-[var(--cloud-white)]">
+        <Navbar activePage={activeSection} />
+        <main id="app-content" className="app-content">
+          <ResumePage />
         </main>
         <Analytics />
       </div>

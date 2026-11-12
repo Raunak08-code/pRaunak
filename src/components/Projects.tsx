@@ -146,6 +146,7 @@ function ProjectCard({ project }: { project: ProjectItem }) {
 function ProjectDetail({ project }: { project: ProjectItem }) {
   if (project.id === "glassbox") return <GlassBoxCaseStudy project={project} />;
   if (project.id === "corvina") return <CorvinaCaseStudy project={project} />;
+  if (project.id === "my-portfolio") return <PortfolioDeliveryCaseStudy project={project} />;
 
   const supportingDetails = project.description.slice(1);
 
@@ -190,6 +191,213 @@ function ProjectDetail({ project }: { project: ProjectItem }) {
         </div>
       </div>
     </section>
+  );
+}
+
+const portfolioArchitecture = [
+  { title: "GitHub repository", detail: "Versioned source and workflow definitions.", state: "Source" },
+  { title: "Build CI", detail: "GitHub Actions runs npm ci and npm run build.", state: "Push + PR" },
+  { title: "Image publisher", detail: "Separate main-branch workflow builds and pushes the container image.", state: "main only" },
+  { title: "Docker Hub", detail: "Stores latest and commit SHA image tags.", state: "Registry" },
+  { title: "AWS EC2", detail: "Ubuntu host; image pull and container start are documented in runbooks.", state: "Manual steps" },
+];
+
+const portfolioTechnology = [
+  {
+    domain: "Source control & CI/CD",
+    items: ["Git", "GitHub", "GitHub Actions"],
+    role: "Git and GitHub track source changes. The CI workflow installs dependencies and builds the site for pushes to main, dev, feature/*, and pull requests. A separate workflow publishes Docker images on main.",
+    learning: "Separate validation from artifact publishing, and scope workflows to the branch and event that needs them.",
+  },
+  {
+    domain: "Containerization",
+    items: ["Docker", "Docker Hub"],
+    role: "The Dockerfile uses Node 22 Alpine, installs dependencies, builds the Vite app, exposes port 3000, and starts the Vite server. The publisher tags the image latest and with the commit SHA.",
+    learning: "Build artifacts can be versioned and distributed as images. The current container command is a development server and needs production-serving hardening.",
+  },
+  {
+    domain: "Cloud infrastructure",
+    items: ["AWS EC2", "Ubuntu"],
+    role: "The EC2 runbook documents an Ubuntu host for pulling and running the Docker Hub image, with SSH-based Linux administration.",
+    learning: "A cloud VM adds host, network, access, and runtime responsibilities alongside the application itself.",
+  },
+  {
+    domain: "Web server & traffic",
+    items: ["Nginx", "Reverse proxy", "HTTP"],
+    role: "The Nginx runbook routes requests arriving on port 80 to the container mapped on host port 3000; it also documents nginx -t before reloading configuration.",
+    learning: "A reverse proxy separates the public traffic entry point from the application process and its host port.",
+  },
+  {
+    domain: "Operating system & operations",
+    items: ["Linux", "Ubuntu", "Shell / terminal"],
+    role: "Runbooks use shell commands for image pulls, container lifecycle, Docker permissions, Nginx configuration, and service checks.",
+    learning: "Operational instructions should include observable checks such as docker ps, curl, and nginx -t.",
+  },
+];
+
+const portfolioDeliveryStages = [
+  ["01", "Develop", "Change the React/Vite application, track it with Git, and push the source to GitHub.", "Implemented"],
+  ["02", "Validate", "The CI workflow runs npm ci and npm run build on configured pushes and pull requests.", "Automated"],
+  ["03", "Publish image", "A separate main-branch workflow logs into Docker Hub with GitHub Actions secrets, builds the image, and pushes latest plus the commit SHA tag.", "Automated on main"],
+  ["04", "Deploy to EC2", "The AWS runbook documents pulling the image and starting a container on an Ubuntu EC2 host.", "Runbook procedure"],
+  ["05", "Route traffic", "The Nginx runbook documents proxying public HTTP port 80 to the application container on port 3000.", "Runbook procedure"],
+  ["06", "Verify", "Runbooks describe checking container status, requesting localhost, validating Nginx syntax, and testing the proxied response.", "Manual checks"],
+];
+
+const portfolioPrinciples = [
+  ["Infrastructure as an engineering discipline", "Plan for reliable, repeatable, maintainable operations, and make deployment behavior clear."],
+  ["Automation over manual repetition", "Use workflow automation for build validation and image publishing; keep the documented EC2 deployment steps explicit."],
+  ["Reproducible deployment artifacts", "Use container images and commit-based tags to identify what is available to deploy."],
+  ["Continuous delivery", "Connect source changes, validation, image publishing, deployment, and operational checks while making automated and manual stages clear."],
+  ["Observability and operational awareness", "Treat accessibility, diagnostics, and maintainability as part of deployment; monitoring integration is future work for this project."],
+  ["Security by design", "Pass Docker Hub credentials to the publish workflow through GitHub Actions secrets rather than embedding them in the workflow text."],
+];
+
+const portfolioRoadmap = [
+  "Replace the Vite development server in the image with production static-file serving.",
+  "Explore Terraform for repeatable cloud infrastructure provisioning.",
+  "Add automated EC2 deployment only with deployment credentials, health checks, and rollback behavior defined.",
+  "Add application and host monitoring with suitable metrics and dashboards.",
+  "Review least-privilege access, secret handling, and container image scanning.",
+  "Add deployment health validation and a documented recovery procedure.",
+];
+
+function PortfolioDeliveryCaseStudy({ project }: { project: ProjectItem }) {
+  return (
+    <article className="project-detail-page portfolio-case-study">
+      <div className="project-detail-shell portfolio-case-shell">
+        <a href="#/project" className="project-back-link">
+          <ArrowLeft aria-hidden="true" /> Back to My Work
+        </a>
+
+        <header className="portfolio-case-hero">
+          <p className="project-detail-kicker">DevOps Engineering · Cloud Infrastructure · CI/CD</p>
+          <h1>{project.title}</h1>
+          <p className="project-detail-tagline">A portfolio delivery workflow spanning source control, build automation, container publishing, documented cloud deployment, and HTTP traffic routing.</p>
+          <div className="portfolio-case-statuses" aria-label="Implementation status">
+            <span><i className="portfolio-status-dot is-implemented" />Implemented in repository</span>
+            <span><i className="portfolio-status-dot is-documented" />Documented in runbooks</span>
+            <span><i className="portfolio-status-dot is-planned" />Planned improvement</span>
+          </div>
+          <ProjectLinks project={project} />
+        </header>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-overview-title">
+          <div className="portfolio-section-heading"><span>01 / Project context</span><h2 id="portfolio-overview-title">Project Overview</h2></div>
+          <div className="portfolio-overview-grid">
+            <div>
+              <p className="portfolio-lead">This personal engineering portfolio is also a practical exercise in software delivery and infrastructure operations: source changes are validated, a container image is published, and runbooks document how to host it on cloud compute behind a reverse proxy.</p>
+              <p>The project is intended to connect application delivery with the operational work around it: build workflows, image distribution, Linux host administration, port mapping, HTTP routing, and deployment checks.</p>
+            </div>
+            <aside className="portfolio-scope-note"><strong>Implementation boundary</strong><p>CI build validation and Docker Hub image publishing are configured as separate GitHub Actions workflows. EC2 deployment and Nginx setup are documented procedures, not an automated deployment job. The current Dockerfile starts Vite's development server, so production serving hardening remains future work.</p></aside>
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-philosophy-title">
+          <div className="portfolio-section-heading"><span>02 / Engineering principles</span><h2 id="portfolio-philosophy-title">Engineering Philosophy</h2></div>
+          <div className="portfolio-principles-grid">
+            {portfolioPrinciples.map(([title, description], index) => (
+              <article className="portfolio-principle" key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></article>
+            ))}
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-architecture-title">
+          <div className="portfolio-section-heading"><span>03 / System design</span><h2 id="portfolio-architecture-title">Infrastructure &amp; Deployment Architecture</h2></div>
+          <p className="portfolio-section-intro">The diagram separates what runs automatically in GitHub from what the deployment runbooks describe as operator-led EC2 steps.</p>
+          <ol className="portfolio-architecture-flow" aria-label="Source to cloud deployment workflow">
+            {portfolioArchitecture.map(({ title, detail, state }, index) => (
+              <li key={title}>
+                <span className="portfolio-flow-number">{String(index + 1).padStart(2, "0")}</span>
+                <span className="portfolio-flow-state">{state}</span>
+                <h3>{title}</h3><p>{detail}</p>
+                {index < portfolioArchitecture.length - 1 && <span className="portfolio-flow-arrow" aria-hidden="true">→</span>}
+              </li>
+            ))}
+          </ol>
+          <div className="portfolio-traffic-flow">
+            <span>Visitor · HTTP</span><b aria-hidden="true">→</b><span>Nginx · host port 80</span><b aria-hidden="true">→</b><span>Docker container · host port 3000</span>
+          </div>
+          <div className="portfolio-architecture-notes">
+            <article><h3>GitHub</h3><p>Stores source and workflow definitions, tracks changes, and triggers workflows for configured branch pushes and pull requests.</p></article>
+            <article><h3>GitHub Actions</h3><p>One workflow runs the site build. A separate main-only workflow builds and publishes the Docker image, using repository secrets for Docker Hub credentials.</p></article>
+            <article><h3>Docker &amp; Docker Hub</h3><p>Docker packages the app into an image. Docker Hub stores the latest and commit-SHA tags for later retrieval.</p></article>
+            <article><h3>AWS EC2 &amp; Linux</h3><p>The runbook describes an Ubuntu host that pulls and runs the image. Container operation and server administration are documented as manual deployment work.</p></article>
+            <article><h3>Nginx</h3><p>The reverse-proxy runbook routes requests on host port 80 to the application container on host port 3000.</p></article>
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-stack-title">
+          <div className="portfolio-section-heading"><span>04 / Tools in context</span><h2 id="portfolio-stack-title">Technology Stack</h2></div>
+          <div className="portfolio-technology-list">
+            {portfolioTechnology.map(({ domain, items, role, learning }) => (
+              <article key={domain}>
+                <header><h3>{domain}</h3><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul></header>
+                <div><strong>Role in this project</strong><p>{role}</p></div>
+                <div><strong>Engineering takeaway</strong><p>{learning}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-lifecycle-title">
+          <div className="portfolio-section-heading"><span>05 / Delivery method</span><h2 id="portfolio-lifecycle-title">Software Delivery Lifecycle</h2></div>
+          <ol className="portfolio-lifecycle">
+            {portfolioDeliveryStages.map(([number, title, description, status]) => (
+              <li key={number}><span>{number}</span><div><div className="portfolio-lifecycle-title"><h3>{title}</h3><small>{status}</small></div><p>{description}</p></div></li>
+            ))}
+          </ol>
+          <div className="portfolio-implementation-note"><Settings aria-hidden="true" /><p><strong>Configuration and runtime note:</strong> Docker Hub login reads <code>DOCKER_USERNAME</code> and <code>DOCKER_TOKEN</code> from GitHub Actions secrets. The portfolio itself has no runtime secret configuration. The checked-in Dockerfile builds the Vite app, exposes 3000, then runs <code>npm run dev -- --host</code>; it does not serve the production build from a production web server.</p></div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-challenges-title">
+          <div className="portfolio-section-heading"><span>06 / Operational decisions</span><h2 id="portfolio-challenges-title">Challenges &amp; Engineering Decisions</h2></div>
+          <div className="portfolio-challenges">
+            <article><span>Documented in Nginx runbook</span><h3>Container and Nginx competed for port 80</h3><dl><div><dt>Root cause</dt><dd>The first container mapping used host port 80, which Nginx also needs for incoming HTTP.</dd></div><div><dt>Documented response</dt><dd>Move the container mapping to host port 3000, keep Nginx on port 80, validate with <code>nginx -t</code>, then reload and check the proxied response.</dd></div><div><dt>Learning</dt><dd>Assign distinct responsibilities and host ports to the public proxy and application runtime.</dd></div></dl></article>
+            <article><span>Documented in EC2 runbook</span><h3>Docker socket permission denied</h3><dl><div><dt>Root cause</dt><dd>The Ubuntu user does not have permission to access the Docker socket.</dd></div><div><dt>Documented response</dt><dd>Add the user to the Docker group and reconnect the SSH session before checking group membership and Docker access.</dd></div><div><dt>Learning</dt><dd>Linux group membership affects operational access; reconnect and verify after changing it.</dd></div></dl></article>
+            <article><span>Workflow configuration</span><h3>Keep registry credentials out of source</h3><dl><div><dt>Engineering concern</dt><dd>Image publishing needs Docker Hub authentication.</dd></div><div><dt>Implemented in workflow</dt><dd>The action reads username and token from GitHub Actions secrets. The repository config shows the secret references, not the secret values or their account configuration.</dd></div><div><dt>Learning</dt><dd>Automated workflows should consume secret values through the platform's secret mechanism and avoid printing them.</dd></div></dl></article>
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-operations-title">
+          <div className="portfolio-section-heading"><span>07 / Runtime &amp; care</span><h2 id="portfolio-operations-title">Reliability &amp; Operations</h2></div>
+          <div className="portfolio-operations-grid">
+            <article><span className="portfolio-status-tag is-implemented">Demonstrated / configured</span><ul><li>Container image packaging and version tags.</li><li>Workflow build validation and Docker Hub publishing configuration.</li><li>Documented container restart policy and port mapping.</li><li>Runbook checks using docker ps, curl, nginx -t, and Nginx reload.</li><li>Nginx separates public HTTP entry from the container's host port.</li></ul></article>
+            <article><span className="portfolio-status-tag is-planned">Not implemented for this project</span><ul><li>Automated EC2 deployment from GitHub Actions.</li><li>Application health endpoint, deployment gates, and rollback automation.</li><li>Project-specific Prometheus/Grafana monitoring.</li><li>High availability, autoscaling, Kubernetes, or infrastructure as code.</li><li>Production static-file serving in the current Docker image.</li></ul></article>
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-competencies-title">
+          <div className="portfolio-section-heading"><span>08 / Evidence from implementation</span><h2 id="portfolio-competencies-title">DevOps &amp; Cloud Engineering Competencies</h2></div>
+          <div className="portfolio-competencies">
+            <article><h3>CI/CD engineering</h3><p>GitHub Actions build configuration and a separate main-branch Docker publishing workflow.</p></article>
+            <article><h3>Containerization</h3><p>Docker image build, Docker Hub tags, image pull, port mapping, and container lifecycle commands.</p></article>
+            <article><h3>Cloud infrastructure</h3><p>AWS EC2 deployment steps and Ubuntu administration documented in the runbook.</p></article>
+            <article><h3>Linux operations</h3><p>SSH, Docker access, service checks, and server command-line operations in the deployment procedures.</p></article>
+            <article><h3>Traffic management</h3><p>Nginx reverse proxy configuration and port 80 to port 3000 request routing documented in its runbook.</p></article>
+            <article><h3>Operational practice</h3><p>Deployment verification, port troubleshooting, permission debugging, and configuration validation steps.</p></article>
+          </div>
+        </section>
+
+        <section className="portfolio-case-section" aria-labelledby="portfolio-roadmap-title">
+          <div className="portfolio-section-heading"><span>09 / Planned work</span><h2 id="portfolio-roadmap-title">Future Improvements</h2></div>
+          <p className="portfolio-section-intro">These are roadmap ideas, not current capabilities of the portfolio deployment.</p>
+          <ul className="portfolio-roadmap">{portfolioRoadmap.map((item) => <li key={item}><Sparkles aria-hidden="true" />{item}</li>)}</ul>
+        </section>
+
+        <section className="portfolio-case-closing">
+          <p>What this project demonstrates</p>
+          <h2>Following an application from source to an operational endpoint.</h2>
+          <p>This work has helped me connect source control and build automation with image distribution, Linux cloud operations, reverse-proxy routing, and deployment verification. It also makes the next engineering steps visible: production runtime hardening, automated deployment, and stronger operational checks.</p>
+          <div className="portfolio-resource-links">
+            <a href="/docs/AWS_RUNBOOK.md" target="_blank" rel="noreferrer">AWS EC2 runbook <ArrowUpRight aria-hidden="true" /></a>
+            <a href="/docs/NGINX_RUNBOOK.md" target="_blank" rel="noreferrer">Nginx reverse-proxy runbook <ArrowUpRight aria-hidden="true" /></a>
+            <a href="/docs/Docker_DockerHub_RUNBOOK.md" target="_blank" rel="noreferrer">Docker &amp; Docker Hub runbook <ArrowUpRight aria-hidden="true" /></a>
+          </div>
+          <ProjectLinks project={project} />
+        </section>
+      </div>
+    </article>
   );
 }
 

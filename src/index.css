@@ -104,6 +104,7 @@ body {
 }
 
 .site-nav {
+  z-index: 70;
   border-bottom: 1px solid rgba(17, 24, 39, 0.08);
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(18px);
@@ -2227,7 +2228,7 @@ body {
 .about-detail-toolbar {
   position: sticky;
   z-index: 62;
-  top: 0;
+  top: 4.5rem;
   display: flex;
   justify-content: flex-end;
   padding: 0.75rem clamp(1rem, 3vw, 2rem);
@@ -2381,5 +2382,735 @@ body {
 
   .landing-story-link {
     margin-top: 0.5rem;
+  }
+}
+
+/* CORVINA case study */
+.corvina-case-study {
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: clamp(4rem, 8vw, 8rem);
+  color: #151923;
+}
+
+.corvina-shell {
+  width: 100%;
+  max-width: none;
+}
+
+.corvina-case-study .project-back-link {
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.corvina-hero {
+  max-width: 1080px;
+  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(3rem, 7vw, 6rem);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.corvina-hero h1 {
+  margin: 0.65rem 0 0;
+  color: #10131a;
+  font-size: clamp(3.7rem, 10vw, 8rem);
+  font-weight: 820;
+  letter-spacing: -0.09em;
+  line-height: 0.95;
+}
+
+.corvina-tagline {
+  margin: 1rem 0 0;
+  color: #202b3d;
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+
+.corvina-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.35rem;
+}
+
+.corvina-categories span {
+  border: 1px solid rgba(36, 87, 230, 0.2);
+  border-radius: 999px;
+  padding: 0.4rem 0.72rem;
+  background: #f6f8ff;
+  color: var(--cobalt);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.corvina-lede {
+  max-width: 860px;
+  margin: 1.3rem 0 0;
+  color: #586273;
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  line-height: 1.8;
+}
+
+.corvina-hero .project-detail-links {
+  margin-top: 1.5rem;
+}
+
+.corvina-implementation-note,
+.corvina-ai-note {
+  display: flex;
+  max-width: 920px;
+  gap: 0.8rem;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(36, 87, 230, 0.18);
+  border-radius: 0.9rem;
+  padding: 1rem 1.1rem;
+  background: #f5f8ff;
+  color: #3d4c66;
+}
+
+.corvina-implementation-note svg,
+.corvina-ai-note svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  color: var(--cobalt);
+}
+
+.corvina-implementation-note p,
+.corvina-ai-note p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.corvina-section {
+  padding: clamp(3.5rem, 7vw, 6.2rem) 0;
+  border-bottom: 1px solid var(--border-soft);
+  scroll-margin-top: 5rem;
+}
+
+.corvina-section-heading {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.corvina-section-heading > p,
+.corvina-summary-kicker {
+  margin: 0 0 0.65rem;
+  color: var(--cobalt);
+  font-size: 0.73rem;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.corvina-section-heading h2 {
+  max-width: 950px;
+  margin: 0;
+  color: #12151c;
+  font-size: clamp(2rem, 4.7vw, 3.8rem);
+  font-weight: 790;
+  letter-spacing: -0.065em;
+  line-height: 1.05;
+}
+
+.corvina-ideology-copy {
+  display: grid;
+  max-width: 1050px;
+  gap: 1rem;
+  color: #586273;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.corvina-ideology-copy p {
+  margin: 0;
+}
+
+.corvina-philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.corvina-philosophy-grid article,
+.corvina-method-card,
+.corvina-tech-card,
+.corvina-capabilities article,
+.corvina-security-card,
+.corvina-roadmap article {
+  border: 1px solid #e5e9f0;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(23, 34, 58, 0.04);
+}
+
+.corvina-philosophy-grid article {
+  min-height: 220px;
+  padding: 1.4rem;
+}
+
+.corvina-philosophy-grid svg,
+.corvina-method-card > svg,
+.corvina-capabilities article > svg,
+.corvina-security-card > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--cobalt);
+}
+
+.corvina-philosophy-grid h3,
+.corvina-method-card h3,
+.corvina-workflow h3,
+.corvina-tech-card h3,
+.corvina-capabilities h3,
+.corvina-security-card h3,
+.corvina-considerations h3,
+.corvina-roadmap h3 {
+  margin: 1rem 0 0.45rem;
+  color: #171b24;
+  font-size: 1rem;
+  font-weight: 730;
+  letter-spacing: -0.02em;
+}
+
+.corvina-philosophy-grid p,
+.corvina-method-card p,
+.corvina-section-intro,
+.corvina-workflow p,
+.corvina-capabilities p,
+.corvina-decisions p,
+.corvina-considerations p {
+  margin: 0;
+  color: #606c7e;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.corvina-methodology {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.corvina-methodology li {
+  min-width: 0;
+}
+
+.corvina-method-number {
+  display: block;
+  margin: 0 0 0.65rem 0.15rem;
+  color: var(--cobalt);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.corvina-method-card {
+  height: calc(100% - 1.5rem);
+  min-height: 225px;
+  padding: 1rem;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.corvina-method-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(36, 87, 230, 0.35);
+  box-shadow: 0 14px 32px rgba(36, 87, 230, 0.08);
+}
+
+.corvina-method-card h3 {
+  font-size: 0.92rem;
+}
+
+.corvina-method-card p {
+  font-size: 0.82rem;
+}
+
+.corvina-validation-note {
+  max-width: 1000px;
+  margin: 1.5rem 0 0;
+  border-left: 3px solid var(--cobalt);
+  padding: 0.5rem 0 0.5rem 1rem;
+  color: #586273;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.corvina-section-intro {
+  max-width: 950px;
+  margin-bottom: 1.8rem;
+  font-size: 1rem;
+}
+
+.corvina-architecture {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.corvina-architecture-step {
+  position: relative;
+  min-width: 0;
+}
+
+.corvina-architecture-card {
+  display: flex;
+  min-height: 190px;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e4e8ef;
+  border-radius: 1rem;
+  padding: 1.15rem;
+  background: #f9fbff;
+}
+
+.corvina-architecture-index {
+  margin-bottom: auto;
+  color: #8a94a5;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.corvina-architecture-card svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0.8rem 0 0.2rem;
+  color: var(--cobalt);
+}
+
+.corvina-architecture-card h3 {
+  margin: 0.5rem 0 0.35rem;
+  color: #1a2230;
+  font-size: 0.95rem;
+  font-weight: 730;
+}
+
+.corvina-architecture-card p {
+  margin: 0;
+  color: #6a7585;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.corvina-architecture-arrow {
+  position: absolute;
+  top: 50%;
+  right: -1.1rem;
+  z-index: 1;
+  color: var(--cobalt);
+  font-size: 1.1rem;
+  transform: translateY(-50%);
+}
+
+.corvina-api-return {
+  display: flex;
+  max-width: 750px;
+  gap: 0.9rem;
+  align-items: flex-start;
+  margin: 1.4rem auto 0;
+  border: 1px solid rgba(36, 87, 230, 0.17);
+  border-radius: 0.9rem;
+  padding: 1rem 1.2rem;
+  background: #f5f8ff;
+}
+
+.corvina-api-return > svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: 0 0 auto;
+  color: var(--cobalt);
+}
+
+.corvina-api-return h3 {
+  margin: 0 0 0.35rem;
+  color: #1c2638;
+  font-size: 0.95rem;
+}
+
+.corvina-api-return p,
+.corvina-architecture-footnote {
+  margin: 0;
+  color: #5d687a;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.corvina-api-return code {
+  border-radius: 0.3rem;
+  padding: 0.08rem 0.3rem;
+  background: #e8eefc;
+  color: #2149aa;
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+}
+
+.corvina-architecture-footnote {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.corvina-workflow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.corvina-workflow li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 145px;
+  border-top: 1px solid #e5e9f0;
+  padding: 1.25rem 1.5rem 1.25rem 0;
+}
+
+.corvina-workflow-number {
+  color: var(--cobalt);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.corvina-workflow h3 {
+  margin: 0 0 0.4rem;
+}
+
+.corvina-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.corvina-tech-card {
+  padding: 1.3rem;
+}
+
+.corvina-tech-card h3 {
+  margin: 0 0 1rem;
+}
+
+.corvina-tech-card ul,
+.corvina-security-card ul,
+.corvina-roadmap ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.corvina-tech-card li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.corvina-tech-card li svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+  margin-top: 0.12rem;
+  color: var(--cobalt);
+}
+
+.corvina-tech-card li div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.corvina-tech-card li strong {
+  color: #354154;
+  font-size: 0.82rem;
+}
+
+.corvina-tech-card li span {
+  color: #738094;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.corvina-ai-note {
+  margin-top: 1.2rem;
+}
+
+.corvina-capabilities {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.corvina-capabilities article {
+  min-height: 175px;
+  padding: 1.3rem;
+}
+
+.corvina-capabilities h3 {
+  margin-top: 0.9rem;
+}
+
+.corvina-decisions {
+  overflow: hidden;
+  border: 1px solid #e5e9f0;
+  border-radius: 1rem;
+}
+
+.corvina-decision-header,
+.corvina-decisions article {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 1.5rem;
+  padding: 1.1rem 1.3rem;
+}
+
+.corvina-decision-header {
+  background: #f2f5fb;
+  color: #303c50;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.corvina-decisions article + article {
+  border-top: 1px solid #e8ebf1;
+}
+
+.corvina-decisions h3 {
+  margin: 0;
+  color: #303c50;
+  font-size: 0.9rem;
+}
+
+.corvina-security-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.corvina-security-card {
+  padding: 1.4rem;
+}
+
+.corvina-security-card h3 {
+  margin: 0.8rem 0 1rem;
+}
+
+.corvina-security-card li,
+.corvina-roadmap li {
+  position: relative;
+  padding-left: 1.2rem;
+  color: #606c7e;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.corvina-security-card li::before,
+.corvina-roadmap li::before {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.1rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--cobalt);
+  content: "";
+}
+
+.corvina-security-gaps {
+  background: #fafbfe;
+}
+
+.corvina-security-gaps > svg {
+  color: #b7791f;
+}
+
+.corvina-considerations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.corvina-considerations article {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  border-radius: 0.9rem;
+  padding: 1.2rem;
+  background: #f6f8fc;
+}
+
+.corvina-considerations article > svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+  color: var(--cobalt);
+}
+
+.corvina-considerations h3 {
+  margin: 0 0 0.35rem;
+}
+
+.corvina-roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.corvina-roadmap article {
+  padding: 1.4rem;
+}
+
+.corvina-roadmap-phase {
+  color: var(--cobalt);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.corvina-roadmap h3 {
+  min-height: 2.5rem;
+  margin-top: 0.65rem;
+}
+
+.corvina-roadmap ul {
+  margin-top: 1.1rem;
+}
+
+.corvina-summary {
+  margin-top: clamp(3rem, 7vw, 6rem);
+  border-radius: 1.4rem;
+  padding: clamp(2rem, 6vw, 5rem);
+  background: #f3f6ff;
+}
+
+.corvina-summary h2 {
+  max-width: 850px;
+  margin: 0 0 1rem;
+  color: #11151e;
+  font-size: clamp(2rem, 4.8vw, 3.8rem);
+  font-weight: 790;
+  letter-spacing: -0.065em;
+  line-height: 1.06;
+}
+
+.corvina-summary > p:not(.corvina-summary-kicker) {
+  max-width: 930px;
+  margin: 0;
+  color: #586273;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.corvina-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.5rem;
+  margin-top: 1.5rem;
+  color: #707c8e;
+  font-size: 0.78rem;
+}
+
+.corvina-summary-meta span {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.corvina-summary-meta strong {
+  color: #273247;
+  font-size: 0.84rem;
+}
+
+.corvina-summary .project-detail-links {
+  margin-top: 1.6rem;
+}
+
+@media (max-width: 1150px) {
+  .corvina-methodology,
+  .corvina-architecture {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .corvina-method-card {
+    min-height: 190px;
+  }
+
+  .corvina-architecture-arrow {
+    display: none;
+  }
+
+  .corvina-tech-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .corvina-philosophy-grid,
+  .corvina-methodology,
+  .corvina-architecture,
+  .corvina-capabilities,
+  .corvina-roadmap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .corvina-workflow,
+  .corvina-security-layout,
+  .corvina-considerations {
+    grid-template-columns: 1fr;
+  }
+
+  .corvina-method-card {
+    min-height: 175px;
+  }
+}
+
+@media (max-width: 520px) {
+  .corvina-philosophy-grid,
+  .corvina-methodology,
+  .corvina-architecture,
+  .corvina-workflow,
+  .corvina-tech-grid,
+  .corvina-capabilities,
+  .corvina-decision-header,
+  .corvina-decisions article,
+  .corvina-security-layout,
+  .corvina-considerations,
+  .corvina-roadmap {
+    grid-template-columns: 1fr;
+  }
+
+  .corvina-hero h1 {
+    font-size: clamp(3.2rem, 17vw, 5rem);
+  }
+
+  .corvina-method-card {
+    min-height: auto;
+  }
+
+  .corvina-architecture-card {
+    min-height: 150px;
+  }
+
+  .corvina-workflow li {
+    min-height: 0;
+    padding: 1.1rem 0;
+  }
+
+  .corvina-decision-header {
+    gap: 0.5rem;
+  }
+
+  .corvina-roadmap h3 {
+    min-height: 0;
   }
 }

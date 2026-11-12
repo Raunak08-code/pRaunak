@@ -51,6 +51,7 @@ export default function About() {
   const aboutScrollY = useRef(0);
   const detailPageRef = useRef<HTMLDivElement>(null);
   const hadActivePanel = useRef(false);
+  const restoreAboutScroll = useRef(true);
 
   useLayoutEffect(() => {
     if (activePanel) {
@@ -60,20 +61,36 @@ export default function About() {
     }
 
     if (hadActivePanel.current) {
-      const scrollContainer = document.getElementById("app-content");
-      if (scrollContainer) scrollContainer.scrollTop = aboutScrollY.current;
-      else window.scrollTo(0, aboutScrollY.current);
+      if (restoreAboutScroll.current) {
+        const scrollContainer = document.getElementById("app-content");
+        if (scrollContainer) scrollContainer.scrollTop = aboutScrollY.current;
+        else window.scrollTo(0, aboutScrollY.current);
+      }
       hadActivePanel.current = false;
+      restoreAboutScroll.current = true;
     }
   }, [activePanel]);
 
   useEffect(() => {
     if (!activePanel) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setActivePanel(null);
+    const closeForSectionNavigation = () => {
+      const destination = window.location.hash.replace(/^#\/?/, "");
+      if (["about", "learning", "road-ahead"].includes(destination)) return;
+      restoreAboutScroll.current = false;
+      setActivePanel(null);
     };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        restoreAboutScroll.current = true;
+        setActivePanel(null);
+      }
+    };
+    window.addEventListener("hashchange", closeForSectionNavigation);
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("hashchange", closeForSectionNavigation);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
   }, [activePanel]);
 
   if (activePanel) {
@@ -95,7 +112,10 @@ export default function About() {
           <button
             type="button"
             className="about-detail-close"
-            onClick={() => setActivePanel(null)}
+            onClick={() => {
+              restoreAboutScroll.current = true;
+              setActivePanel(null);
+            }}
             aria-label="Back to About"
           >
             <ArrowLeft aria-hidden="true" />
@@ -174,6 +194,7 @@ export default function About() {
                   aboutScrollY.current =
                     document.getElementById("app-content")?.scrollTop ??
                     window.scrollY;
+                  restoreAboutScroll.current = true;
                   setActivePanel(panel);
                 }}
               >

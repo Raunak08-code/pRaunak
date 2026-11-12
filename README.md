@@ -1,200 +1,126 @@
-# Raunak Pandey
+# Raunak Pandey — DevOps & Cloud Portfolio
 
-> A responsive personal portfolio with a click-to-enter landing screen.
+Personal portfolio for my work and learning in DevOps, cloud infrastructure, automation, and observability.
 
-## Overview
+- **Live portfolio:** [raunak-dev-ops-portfolio.vercel.app](https://raunak-dev-ops-portfolio.vercel.app/)
+- **Source:** [Raunak08-code/Raunak-DevOps--portfolio](https://github.com/Raunak08-code/Raunak-DevOps--portfolio)
+- **Docker Hub:** [raunak08 repositories](https://hub.docker.com/repositories/raunak08)
 
-The responsive landing screen opens the portfolio when clicked. The portfolio includes About, Education and Skills, Projects, Blogs and activities, and Contact sections.
+## What the Portfolio Shows
 
----
+The site is a responsive, single-page portfolio with hash-based section navigation:
 
-## Live Features
+- **Landing:** introduction, portrait, and social profiles.
+- **About:** engineering focus and capabilities, with dedicated Currently Learning, Road Ahead, and Certifications & Activities views. Each view has a back control that restores the About scroll position.
+- **Edu-Skill:** education history and grouped technical skills.
+- **Work:** project cards and detail views. GlassBox has an expanded observability case study with architecture, implementation steps, technology stack, and screenshots from its repository.
+- **Blog:** article cards that open the complete article content.
+- **Connect:** phone, email, and social contact links, followed by the portfolio footer.
 
-* Responsive desktop and mobile landing artwork
-* About, education and skills, projects, blogs and activities, and contact sections
+The fixed navigation, section links, browser history, detail views, and return controls work without a full page reload. Layouts adapt to desktop and mobile screens.
 
----
+## DevOps Work Featured Here
 
-## DevOps Features
+### GlassBox — Observability and Monitoring
 
-### Containerization
+GlassBox is a containerized monitoring project built with Python, Docker Compose, Prometheus, Grafana, and PostgreSQL. Its case study documents the implemented telemetry path: collecting system, process, and Docker container metrics; exposing CPU, memory, and disk gauges to Prometheus; visualizing Prometheus metrics in Grafana; persisting system measurements to PostgreSQL; and logging threshold warnings. The page includes screenshots of the terminal dashboard, Prometheus, Grafana, PostgreSQL, and Docker deployment.
 
-* Dockerized application
-* Reproducible local environment
-* Portable deployment artifact
+### Portfolio Delivery — Docker, GitHub Actions, Docker Hub, and AWS
 
-### Continuous Integration
+This portfolio is packaged in a Docker image. GitHub Actions runs a Node 22 build on pushes to `main`, `dev`, and `feature/*`, and on pull requests. A separate workflow builds and publishes Docker images to Docker Hub when code is pushed to `main`, tagging the image as `latest` and with the commit SHA. Docker Hub credentials are read from GitHub Actions secrets.
 
-Implemented GitHub Actions workflows for:
+The project also documents running the container on AWS EC2 and routing public HTTP traffic through Nginx to the application container. The EC2 deployment steps are in the runbooks below; the Docker publishing workflow does not automatically deploy to EC2.
 
-* Source checkout
-* Dependency installation
-* Application build validation
-* Automated quality checks
+### Other Project Work
 
-### Continuous Delivery
+- **CORVINA:** containerized Python/FastAPI email automation with SMTP/IMAP integration, retry handling, and GitHub Actions delivery workflows.
+- **NorthStar (in development):** a DevOps analytics platform intended to bring development activity, build history, deployment metrics, and engineering delivery insights together.
+- **DARR STUDIOS (in development):** an independent game development studio project.
 
-Implemented automated Docker image publishing:
+The skills section also lists tools and areas I am learning, including Kubernetes, Terraform, CI/CD, AWS services, Prometheus, and Grafana. These are presented as skills and learning areas, not claims that each is deployed in production.
 
-Git Push
-↓
-GitHub Actions
-↓
-Docker Build
-↓
-Docker Hub Publish
+## Technology
 
-### Registry Management
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Motion, Lucide
+- **Containers and delivery:** Docker, GitHub Actions, Docker Hub, Git, GitHub
+- **Cloud and operations:** AWS EC2, Nginx, Linux, SSH
+- **Observability project:** Python, psutil, Prometheus, PromQL, Grafana, PostgreSQL
 
-Docker images are automatically published to Docker Hub after successful pipeline execution.
+## Run Locally
 
----
-
-## Technology Stack
-
-### Frontend
-
-* React
-* TypeScript
-* Vite
-
-### DevOps
-
-* Docker
-* GitHub Actions
-* Docker Hub
-* Git
-* GitHub
-
----
-
-## Project Structure
-
-```text
-Raunak-DevOps--portfolio/
-│
-├── public/
-│   ├── docs/
-│   ├── landing-neon.jpeg
-│   ├── landing-mobile-ver.jpeg
-│   └── signature.webp
-├── src/
-│   ├── components/
-│   ├── App.tsx
-│   ├── data.ts
-│   ├── types.ts
-│   └── index.css
-├── .github/
-│   └── workflows/
-│       ├── ci.yml
-│       └── docker-publish.yml
-│
-├── Dockerfile
-├── .dockerignore
-├── README.md
-└── package.json
-```
-
-## Local Development
-
-Clone repository:
+Requirements: Node.js 22 and npm.
 
 ```bash
-git clone git@github.com:Raunak08-code/Raunak-DevOps--portfolio.git
+git clone https://github.com/Raunak08-code/Raunak-DevOps--portfolio.git
 cd Raunak-DevOps--portfolio
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run application:
-
-```bash
+npm ci
 npm run dev
 ```
 
----
+The development server is available at `http://localhost:3000`.
 
-## Docker Usage
+### Project Checks
 
-Build image:
+```bash
+npm run lint   # TypeScript check (tsc --noEmit)
+npm run build  # Production asset build
+```
+
+The GitHub Actions CI workflow currently runs `npm ci` and `npm run build`.
+
+## Run in Docker
 
 ```bash
 docker build -t raunak-devops-portfolio .
+docker run --rm -p 3000:3000 raunak-devops-portfolio
 ```
 
-Run container:
+The current Docker image builds the site and starts the Vite server on port 3000.
 
-```bash
-docker run -p 3000:3000 raunak-devops-portfolio
-```
-
----
-
-## CI/CD Workflow
-
-### CI Pipeline
+## CI and Image Publishing
 
 ```text
-Developer
-    ↓
-Git Push
-    ↓
-GitHub Actions
-    ↓
-Install Dependencies
-    ↓
-Build Validation
+Push / Pull Request
+        ↓
+GitHub Actions CI (npm ci → npm run build)
+
+Push to main
+        ↓
+GitHub Actions Docker workflow
+        ↓
+Docker build and publish
+        ↓
+Docker Hub: latest + commit SHA
 ```
 
-### CD Pipeline
+The image-publishing workflow expects `DOCKER_USERNAME` and `DOCKER_TOKEN` in the repository’s GitHub Actions secrets.
+
+## Deployment Runbooks
+
+- [AWS EC2 deployment](public/docs/AWS_RUNBOOK.md)
+- [Docker and Docker Hub](public/docs/Docker_DockerHub_RUNBOOK.md)
+- [Nginx reverse proxy](public/docs/NGINX_RUNBOOK.md)
+
+## Repository Layout
 
 ```text
-Developer
-    ↓
-Git Push
-    ↓
-GitHub Actions
-    ↓
-Docker Build
-    ↓
-Docker Hub Publish
+.
+├── .github/workflows/       # Build CI and Docker image publishing
+├── public/
+│   ├── docs/                # Deployment runbooks and project report
+│   └── projects/glassbox/   # GlassBox architecture and implementation images
+├── src/
+│   ├── components/          # Portfolio sections and shared UI
+│   ├── App.tsx              # Landing, section navigation, and footer
+│   ├── data.ts              # Portfolio, project, contact, and blog content
+│   └── index.css            # Global and responsive styles
+├── Dockerfile
+└── README.md
 ```
 
----
+## About Me
 
-## DevOps Learning Objectives Demonstrated
+I’m Raunak Pandey, a Computer Science undergraduate focused on DevOps, cloud infrastructure, platform engineering, and observability. I use this portfolio to document projects, practical implementation work, and the skills I’m continuing to develop.
 
-* Containerization using Docker
-* CI/CD pipeline creation
-* GitHub Actions workflow automation
-* Docker Hub registry integration
-* Secure secret management
-* SSH-based GitHub authentication
-* Documentation and operational runbooks
-
----
-
-## Future Enhancements
-
-* Multi-stage Docker builds
-* Nginx reverse proxy
-* AWS EC2 deployment
-* Terraform infrastructure provisioning
-* Prometheus monitoring
-* Grafana dashboards
-* Kubernetes deployment
-* GitOps workflow
-
----
-
-## Author
-
-Raunak Pandey
-
-Aspiring DevOps Engineer focused on automation, cloud infrastructure, observability, and platform engineering.
-
-GitHub: https://github.com/Raunak08-code
+- [GitHub](https://github.com/Raunak08-code)
+- [LinkedIn](https://www.linkedin.com/in/raunak-pandey-1801202a0/)

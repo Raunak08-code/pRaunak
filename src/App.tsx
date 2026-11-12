@@ -69,7 +69,7 @@ function LandingPage() {
     <section id="landing" className="landing-hero" aria-label="Landing page">
       <section className="landing-intro" aria-labelledby="landing-name">
         <p className="landing-eyebrow">Cloud · DevOps · Platform Engineering</p>
-        <h1 id="landing-name">Raunak<br />Pandey</h1>
+        <h1 id="landing-name">RAUNAK<br />PANDEY</h1>
         <span className="landing-rule" aria-hidden="true" />
         <nav className="landing-socials" aria-label="Social profiles">
           <a href={resumeData.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
@@ -118,7 +118,7 @@ function SiteFooter() {
         <a className="site-footer-brand" href="#landing" aria-label="Raunak Pandey landing page">
           <span className="site-footer-logo" aria-hidden="true">R</span>
           <span>
-            <strong>{resumeData.name}</strong>
+            <strong>Raunak</strong>
             <small>© {new Date().getFullYear()}</small>
           </span>
         </a>

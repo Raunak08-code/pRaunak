@@ -11,7 +11,7 @@ export const resumeData: ResumeData = {
   education: [
     {
       degree: "B.Tech CSE-AI",
-      institution: "G.L. Bajaj Institute of Technology and Management",
+      institution: "G.L. Bajaj Institute of Technology and Management, Greater Noida, UP",
       score: "CGPA 7.23/10",
       year: "2023-2027"
     },
@@ -33,7 +33,7 @@ export const resumeData: ResumeData = {
       id: "glassbox",
       title: "GlassBox",
       subtitle: "Containerized observability and monitoring platform",
-      github: "https://github.com/Raunak-Pandey/GlassBox",
+      github: "https://github.com/Raunak08-code/GlassBox",
       description: [
         "Developed a multi-container observability platform to track, alert on, and analyze infrastructure and application performance.",
         "Configured Prometheus metrics, Grafana dashboards, and Alertmanager for system monitoring and alerting.",
@@ -45,7 +45,7 @@ export const resumeData: ResumeData = {
       id: "corvina",
       title: "CORVINA",
       subtitle: "Automated email processing and response system",
-      github: "https://github.com/Raunak-Pandey/CORVINA",
+      github: "https://github.com/Raunak08-code/CORVINA",
       description: [
         "Built a containerized backend service that processes incoming email, detects intent, and dispatches automated responses.",
         "Designed modular workflows with structured logging, retry handling, and SMTP/IMAP protocol integration.",

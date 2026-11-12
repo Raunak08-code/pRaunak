@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { resumeData } from "../data";
 import Learning from "./Learning";
 import RoadAhead from "./RoadAhead";
 
-type AboutPanel = "learning" | "road-ahead" | "certifications" | "contact" | null;
+type AboutPanel = "learning" | "road-ahead" | "certifications" | null;
 
 const offerings = [
   {
@@ -81,7 +81,6 @@ export default function About() {
       learning: "Currently Learning",
       "road-ahead": "Road Ahead",
       certifications: "Certifications and Activities",
-      contact: "Get in Touch",
     } as const;
 
     return (
@@ -92,14 +91,17 @@ export default function About() {
         aria-modal="true"
         aria-label={panelTitles[activePanel]}
       >
-        <button
-          type="button"
-          className="about-detail-close"
-          onClick={() => setActivePanel(null)}
-          aria-label="Close and return to About"
-        >
-          <X aria-hidden="true" />
-        </button>
+        <div className="about-detail-toolbar">
+          <button
+            type="button"
+            className="about-detail-close"
+            onClick={() => setActivePanel(null)}
+            aria-label="Back to About"
+          >
+            <ArrowLeft aria-hidden="true" />
+            <span>Back to About</span>
+          </button>
+        </div>
         {activePanel === "learning" && <Learning />}
         {activePanel === "road-ahead" && <RoadAhead />}
         {activePanel === "certifications" && (
@@ -110,31 +112,6 @@ export default function About() {
               {[...resumeData.certificationsList, ...resumeData.extraActivities].map((item) => (
                 <p key={item}>{item}</p>
               ))}
-            </div>
-          </section>
-        )}
-        {activePanel === "contact" && (
-          <section className="about-panel-content">
-            <p className="about-kicker">Let’s build together</p>
-            <h1>Get in Touch</h1>
-            <div className="about-contact-links">
-              <a href={`mailto:${resumeData.email}`}>
-                {resumeData.email}<ArrowUpRight aria-hidden="true" />
-              </a>
-              <a href={`tel:${resumeData.phone.replace(/[^0-9+]/g, "")}`}>
-                {resumeData.phone}<ArrowUpRight aria-hidden="true" />
-              </a>
-              <a href={resumeData.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn<ArrowUpRight aria-hidden="true" />
-              </a>
-              {resumeData.instagram && (
-                <a href={resumeData.instagram} target="_blank" rel="noreferrer">
-                  Instagram<ArrowUpRight aria-hidden="true" />
-                </a>
-              )}
-              <a href={resumeData.github} target="_blank" rel="noreferrer">
-                GitHub<ArrowUpRight aria-hidden="true" />
-              </a>
             </div>
           </section>
         )}
@@ -158,17 +135,37 @@ export default function About() {
             </p>
             <p>
               From GlassBox, an observability platform monitoring system health,
-              to NorthStar, a DevOps analytics platform transforming development
-              workflows,
+              to NorthStar, a DevOps analytics platform bringing development
+              activity, build history, and delivery insights together, I explore
+              ways to make infrastructure and software workflows easier to
+              understand and improve.
             </p>
             <p>
-              my mission is to engineer infrastructure that empowers developers
+              GlassBox combines metrics, dashboards, and multi-container
+              monitoring. NorthStar is evolving toward a broader view of
+              development and engineering delivery insights.
+            </p>
+            <p>
+              My mission is to engineer infrastructure that empowers developers
               to build, deploy, and operate software with confidence.
             </p>
           </div>
 
           <div className="about-action-list" aria-label="More about Raunak">
-            {actionItems.map(([panel, label]) => (
+            {actionItems.map(([panel, label]) => panel === "contact" ? (
+              <a
+                key={panel}
+                href="#contact"
+                className="about-action-pill"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.location.hash = "#contact";
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                {label}<span aria-hidden="true">↗</span>
+              </a>
+            ) : (
               <button
                 key={panel}
                 type="button"
@@ -203,22 +200,6 @@ export default function About() {
         </section>
       </div>
 
-      <aside className="about-legacy-copy">
-        <p>
-          I’m a Computer Science undergraduate specializing in Artificial
-          Intelligence at G.L. Bajaj Institute of Technology and Management. I’m
-          passionate about cloud computing, DevOps, platform engineering, and
-          cloud gaming.
-        </p>
-        <p>
-          Alongside NorthStar, I’m developing DARR STUDIOS, an independent game
-          development studio. I enjoy automating deployments, designing
-          observable systems, and exploring the infrastructure behind
-          multiplayer and cloud-powered gaming. My long-term goal is to become a
-          Cloud &amp; Platform Engineer and help make digital experiences more
-          reliable, scalable, and accessible.
-        </p>
-      </aside>
     </section>
   );
 }

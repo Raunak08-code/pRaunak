@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { ArrowUp, Award, Code2, Github, Instagram, Linkedin } from "lucide-react";
+import { ArrowUp, Github, Instagram, Linkedin } from "lucide-react";
 import About from "./components/About";
 import Blogs from "./components/Blogs";
 import Contact from "./components/Contact";
@@ -25,6 +25,7 @@ const getPageFromHash = (): Page => {
 
   return [
     "",
+    "landing",
     "about",
     "edu-skill",
     "education",
@@ -50,6 +51,17 @@ const getSectionPageFromHash = (): SectionPage => {
   if (page === "blogs-extra" || page === "blogs") return "blogs-extra";
   if (page === "contact") return "contact";
   return "about";
+};
+
+const getSectionTargetFromHash = (): string | null => {
+  const page = window.location.hash.replace(/^#\/?/, "");
+  if (page === "landing") return "landing";
+  if (page === "about") return "about";
+  if (["edu-skill", "education", "skills"].includes(page)) return "education";
+  if (["project", "projects"].includes(page)) return "projects";
+  if (["blogs-extra", "blogs"].includes(page)) return "blogs";
+  if (page === "contact") return "contact";
+  return null;
 };
 
 function LandingPage() {
@@ -120,46 +132,7 @@ function SiteFooter() {
 }
 
 function BlogsPage() {
-  return (
-    <>
-      <Blogs />
-
-      <section className="portfolio-art border-b border-[var(--border-soft)] py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <section className="border border-[var(--border-soft)] p-4 sm:p-6">
-            <div className="mb-4 flex items-center gap-2.5 border-b border-[var(--border-soft)] pb-3">
-              <Award className="h-6 w-6 text-indigo-500" />
-              <h2 className="font-sans text-lg font-bold text-[var(--cloud-white)]">
-                Certifications & Activities
-              </h2>
-            </div>
-            <div className="divide-y divide-[var(--border-soft)]">
-              {resumeData.certificationsList.map((cert) => (
-                <p key={cert} className="py-3 text-sm leading-relaxed text-[var(--cloud-white)]/80">
-                  {cert}
-                </p>
-              ))}
-            </div>
-          </section>
-          <section className="border border-[var(--border-soft)] p-4 sm:p-6">
-            <div className="mb-4 flex items-center gap-2.5 border-b border-[var(--border-soft)] pb-3">
-              <Code2 className="h-6 w-6 text-cyan-600" />
-              <h2 className="font-sans text-lg font-bold text-[var(--cloud-white)]">
-                Hackathons & Workshops
-              </h2>
-            </div>
-            <div className="divide-y divide-[var(--border-soft)]">
-              {resumeData.extraActivities.map((activity) => (
-                <p key={activity} className="py-3 text-sm leading-relaxed text-[var(--cloud-white)]/80">
-                  {activity}
-                </p>
-              ))}
-            </div>
-          </section>
-        </div>
-      </section>
-    </>
-  );
+  return <Blogs />;
 }
 
 export default function App() {
@@ -173,10 +146,15 @@ export default function App() {
       const nextPage = getPageFromHash();
       setPage(nextPage);
       setActiveSection(getSectionPageFromHash());
+      if (nextPage === "portfolio" && page === "portfolio") {
+        requestAnimationFrame(() => {
+          document.getElementById(getSectionTargetFromHash() ?? "")?.scrollIntoView({ behavior: "smooth" });
+        });
+      }
     };
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+  }, [page]);
 
   useLayoutEffect(() => {
     if (page !== "portfolio") return;
@@ -193,23 +171,8 @@ export default function App() {
       return;
     }
 
-    if (window.location.hash.startsWith("#/")) {
-      const targetId =
-        hash === "education" || hash === "skills" || hash === "edu-skill"
-          ? "education"
-          : hash === "project" || hash === "projects"
-            ? "projects"
-            : hash === "blogs" || hash === "blogs-extra"
-              ? "blogs"
-              : hash === "contact"
-                ? "contact"
-                : hash === "about"
-                  ? "about"
-                  : null;
-      if (targetId) {
-        document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+    const targetId = getSectionTargetFromHash();
+    if (targetId) document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
   }, [page]);
 
   useEffect(() => {
@@ -253,7 +216,6 @@ export default function App() {
         <Navbar activePage="project" />
         <main id="app-content" className="app-content">
           <Projects projectId={page.slice("project/".length)} />
-          <SiteFooter />
         </main>
         <Analytics />
       </div>
